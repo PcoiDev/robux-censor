@@ -14,6 +14,7 @@
       --track: #c9c9c9;
       --track-on: #2e9e5b;
       --knob: #ffffff;
+      --link: #1a5fd6;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -25,6 +26,7 @@
         --track: #5f6368;
         --track-on: #3fb26d;
         --knob: #ffffff;
+        --link: #8ab4f8;
       }
     }
 
@@ -66,6 +68,7 @@
       justify-content: space-between;
       padding: 12px 14px;
       cursor: pointer;
+      border-bottom: 1px solid var(--border);
     }
 
     .row span {
@@ -121,7 +124,7 @@
     }
 
     .note {
-      padding: 0 14px 12px;
+      padding: 12px 14px 0;
       font-size: 12px;
       color: var(--muted);
     }
@@ -131,18 +134,16 @@
     }
 
     footer {
-      padding: 8px 14px;
-      border-top: 1px solid var(--border);
+      padding: 8px 14px 12px;
       font-size: 12px;
     }
 
     footer a {
-      color: var(--muted);
+      color: var(--link);
       text-decoration: none;
     }
 
     footer a:hover {
-      color: var(--fg);
       text-decoration: underline;
     }
   </style>
@@ -165,7 +166,7 @@
   <p class="note"><strong>Note:</strong> Hides your Robux balance and transactions on roblox.com. Nothing is sent or changed on your account.</p>
 
   <footer>
-    <a href="https://github.com/PcoiDev/robux-censor" target="_blank" rel="noopener">Source code</a>
+    <a href="https://github.com/PcoiDev/robux-censor" target="_blank" rel="noopener">View source code</a>
   </footer>
 
   <script src="popup.js"></script>
