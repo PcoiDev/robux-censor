@@ -18,24 +18,37 @@ Hide your Robux balance and transaction history for privacy.
 
 ## Installation
 
-### Method 1: Install from CRX file (Recommended)
+### Method 1: Install from the release ZIP (Recommended)
 
-1. Download `robux-censor.crx` from the [Releases](../../releases) page
-2. Open Chrome and navigate to `chrome://extensions/`
+1. Download `robux-censor-<version>.zip` from the [Releases](../../releases) page
+2. Extract the ZIP file to a folder you will keep (the extension is loaded from this folder, deleting it removes the extension)
+3. Open your browser and navigate to `chrome://extensions/` (`brave://extensions/` on Brave)
+4. Enable **Developer mode** (toggle in top-right corner)
+5. Click **Load unpacked**
+6. Select the extracted folder
+7. The extension is now installed!
+
+> [!IMPORTANT]
+> On Windows and macOS, Chrome and Brave block extensions installed from a `.crx` file that does not come from the Chrome Web Store. The extension gets disabled with a message such as *"This extension is not from the Chrome Web Store"* or *"Extensions disabled by Brave"*. This is a browser restriction, not a bug in the extension: use the ZIP method above instead.
+
+### Method 2: Install from CRX file (Linux only)
+
+1. Download `robux-censor-<version>.crx` from the [Releases](../../releases) page
+2. Open your browser and navigate to `chrome://extensions/`
 3. Enable **Developer mode** (toggle in top-right corner)
 4. Drag and drop the `.crx` file into the extensions page
 5. Click **Add extension** when prompted
 
-### Method 2: Install from Source
+### Method 3: Install from Source
 
 1. Download the source code:
    - Click the green **Code** button above
    - Select **Download ZIP**
    - Extract the ZIP file to a folder
-2. Open Chrome and navigate to `chrome://extensions/`
+2. Open your browser and navigate to `chrome://extensions/`
 3. Enable **Developer mode** (toggle in top-right corner)
 4. Click **Load unpacked**
-5. Select the extracted folder (src)
+5. Select the extracted `src` folder
 6. The extension is now installed!
 
 ## Support
