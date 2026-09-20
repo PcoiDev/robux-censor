@@ -44,10 +44,24 @@ jobs:
           mkdir -p build
 
           # Accept the key either as raw PEM or base64-encoded PEM.
-          if [[ "$EXTENSION_PRIVATE_KEY" == *"-----BEGIN"* ]]; then
-            printf '%s\n' "$EXTENSION_PRIVATE_KEY" > build/extension.pem
+          # Normalise line endings and stray indentation from copy/paste.
+          key="$(printf '%s' "$EXTENSION_PRIVATE_KEY" | tr -d '\r' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')"
+          if [[ "$key" == *"-----BEGIN"* ]]; then
+            printf '%s\n' "$key" > build/extension.raw.pem
           else
-            printf '%s' "$EXTENSION_PRIVATE_KEY" | base64 --decode > build/extension.pem
+            printf '%s' "$key" | tr -d '\n ' | base64 --decode > build/extension.raw.pem || true
+          fi
+
+          if ! openssl pkey -in build/extension.raw.pem -out build/extension.pem 2> build/openssl.err; then
+            echo "::error::EXTENSION_PRIVATE_KEY is not a valid PEM private key." >&2
+            echo "Diagnostic (no key material shown):" >&2
+            echo "  bytes: $(wc -c < build/extension.raw.pem)" >&2
+            echo "  lines: $(wc -l < build/extension.raw.pem)" >&2
+            echo "  first line: $(head -n1 build/extension.raw.pem | cut -c1-40)" >&2
+            echo "  last line:  $(tail -n1 build/extension.raw.pem | cut -c1-40)" >&2
+            echo "  openssl: $(cat build/openssl.err)" >&2
+            echo "Expected ~28 lines starting with '-----BEGIN PRIVATE KEY-----' and ending with '-----END PRIVATE KEY-----'." >&2
+            exit 1
           fi
 
           (
