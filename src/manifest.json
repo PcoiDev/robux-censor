@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Robux Censor",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Hide your Robux balance and transaction history for privacy",
   "host_permissions": ["https://www.roblox.com/*"],
   "permissions": ["storage", "tabs"],
