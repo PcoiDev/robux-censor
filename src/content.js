@@ -22,9 +22,31 @@ chrome.storage.local.get(['robuxHiderEnabled'], (result) => {
     const numericGroupRe = /(?:[\d\u00A0\u202F.,]+(?:[KkMmBb+]?)(?:[\s\u00A0\u202F]+[\d\u00A0\u202F.,]+)*)/g;
     const multiQRe = /(\?{3})(?:[\s\u00A0\u202F]+)(\?{3})/g;
 
-    // UI controls that contain numbers which are not Robux amounts
-    // (e.g. the "Past 30 Days" date filter on the transactions page).
-    const skipSelector = '[role="menu"], .dropdown-menu, .input-dropdown-btn, .pager, .pagination';
+    // Content that contains numbers which are not Robux amounts:
+    // the "Past 30 Days" date filter and the date / user / item columns
+    // of the transactions table. Only the amount column is censored there.
+    const skipSelector = [
+      '[role="menu"]',
+      '.input-dropdown-btn',
+      '#date-selection',
+      '#transaction-type-selection',
+      '.pager',
+      '.pagination',
+      'td.date',
+      'td.user',
+      'td.item'
+    ].join(', ');
+
+    // Always censored, even when nested in something matched by skipSelector
+    // (the wallet popover is a .dropdown-menu too).
+    const neverSkipSelector = '.dropdown-wallet, #nav-robux-balance, #nav-robux-amount, td.amount';
+
+    function shouldSkip(textNode) {
+      const el = textNode.parentElement;
+      if (!el) return false;
+      if (el.closest(neverSkipSelector)) return false;
+      return !!el.closest(skipSelector);
+    }
 
     function walkReplace(root) {
       if (!root) return false;
@@ -38,7 +60,7 @@ chrome.storage.local.get(['robuxHiderEnabled'], (result) => {
       for (const n of nodes) {
         const t = n.nodeValue;
         if (!t || !hasDigit(t)) continue;
-        if (n.parentElement && n.parentElement.closest(skipSelector)) continue;
+        if (shouldSkip(n)) continue;
         let r = t.replace(numericGroupRe, "???");
         r = r.replace(multiQRe, "???");
         r = r.replace(/(\?{3})[\s\u00A0\u202F]+(\?{3})/g, "???");
