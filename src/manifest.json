@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Robux Masker",
+  "name": "Robux Censor",
   "version": "1.0.0",
   "description": "Hide your Robux balance and transaction history for privacy",
   "host_permissions": ["https://www.roblox.com/*"],
@@ -15,7 +15,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Robux Masker",
+    "default_title": "Robux Censor",
     "default_icon": {
       "16": "icons/16.png",
       "32": "icons/32.png",

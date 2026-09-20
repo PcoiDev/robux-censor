@@ -50,10 +50,10 @@ jobs:
             --pack-extension="$GITHUB_WORKSPACE/build/extension" \
             --pack-extension-key="$GITHUB_WORKSPACE/build/extension.pem"
 
-          mv build/extension.crx "robux-masker-v${version}.crx"
+          mv build/extension.crx "robux-censor-v${version}.crx"
           (
             cd build/extension
-            zip -qr "../../robux-masker-v${version}.zip" .
+            zip -qr "../../robux-censor-v${version}.zip" .
           )
           rm -rf build
 
@@ -62,5 +62,5 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            robux-masker-*.crx
-            robux-masker-*.zip
+            robux-censor-*.crx
+            robux-censor-*.zip
