@@ -10,6 +10,7 @@
       --bg: #ffffff;
       --fg: #1f1f1f;
       --muted: #6b6b6b;
+      --border: #e3e3e3;
       --track: #c9c9c9;
       --track-on: #2e9e5b;
       --knob: #ffffff;
@@ -21,6 +22,7 @@
         --bg: #202124;
         --fg: #e8eaed;
         --muted: #9aa0a6;
+        --border: #3c4043;
         --track: #5f6368;
         --track-on: #3fb26d;
         --knob: #ffffff;
@@ -122,13 +124,14 @@
     }
 
     .note {
-      margin-top: 14px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
       font-size: 12px;
       color: var(--muted);
     }
 
-    .note strong,
-    .note b {
+    .note strong {
       color: var(--fg);
     }
 
@@ -163,7 +166,7 @@
     </header>
   </label>
 
-  <p class="note"><strong>Note:</strong> Hides your <b>Robux balance and transactions</b> on roblox.com. <b>Nothing</b> is sent or changed on your account.</p>
+  <p class="note"><strong>Note:</strong> Replaces your <b>Robux balance</b> and <b>transaction amounts</b> with ??? on roblox.com. Everything stays in your browser: <b>nothing is sent or changed</b> on your account.</p>
 
   <footer>
     <a href="https://github.com/PcoiDev/robux-censor" target="_blank" rel="noopener">View source code</a>
