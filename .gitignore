@@ -1,1 +1,4 @@
-src.perm
+src.pem
+build/
+*.crx
+*.zip

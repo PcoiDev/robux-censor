@@ -34,6 +34,29 @@ Hide your Robux balance and transaction history for privacy.
 5. Select the extracted folder (src)
 6. The extension is now installed!
 
+## Create a release
+
+Releases are built automatically when a tag matching `vX.Y.Z` is pushed. The
+tag must match the version in `src/manifest.json`, for example `v1.0.0`.
+
+Before the first release, create an RSA private key and add its base64-encoded
+content as the GitHub repository secret `EXTENSION_PRIVATE_KEY`:
+
+```bash
+openssl genrsa 2048 | base64 -w 0
+```
+
+Then create the release tag:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The workflow attaches both `robux-masker-vX.Y.Z.crx` and a ZIP source package
+to the GitHub release. Keep the private key unchanged for future releases so
+the extension keeps the same Chrome extension ID.
+
 ## Support
 
 If you encounter any issues:

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Robux Masker",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Hide your Robux balance and transaction history for privacy",
   "host_permissions": ["https://www.roblox.com/*"],
   "permissions": ["storage", "tabs"],
@@ -9,6 +9,7 @@
     "16": "icons/16.png",
     "32": "icons/32.png",
     "48": "icons/48.png",
+    "64": "icons/64.png",
     "96": "icons/96.png",
     "128": "icons/128.png"
   },
@@ -19,6 +20,7 @@
       "16": "icons/16.png",
       "32": "icons/32.png",
       "48": "icons/48.png",
+      "64": "icons/64.png",
       "96": "icons/96.png",
       "128": "icons/128.png"
     }
