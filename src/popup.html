@@ -65,6 +65,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 12px 14px;
+      cursor: pointer;
     }
 
     .row span {
@@ -124,6 +125,26 @@
       font-size: 12px;
       color: var(--muted);
     }
+
+    .note strong {
+      color: var(--fg);
+    }
+
+    footer {
+      padding: 8px 14px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--fg);
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -133,15 +154,19 @@
     <h1>Robux Censor</h1>
   </header>
 
-  <div class="row">
+  <label class="row">
     <span id="status">Enabled</span>
-    <label class="switch">
+    <span class="switch">
       <input type="checkbox" id="toggle" checked>
       <span class="track"></span>
-    </label>
-  </div>
+    </span>
+  </label>
 
-  <p class="note">Hides your Robux balance and transactions on roblox.com. Nothing is sent or changed on your account.</p>
+  <p class="note"><strong>Note:</strong> Hides your Robux balance and transactions on roblox.com. Nothing is sent or changed on your account.</p>
+
+  <footer>
+    <a href="https://github.com/PcoiDev/robux-censor" target="_blank" rel="noopener">Source code</a>
+  </footer>
 
   <script src="popup.js"></script>
 </body>
