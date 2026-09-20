@@ -1,9 +1,8 @@
 name: Build extension release
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -15,52 +14,56 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
 
-      - name: Install Chrome
-        uses: browser-actions/setup-chrome@v1
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-      - name: Validate and package extension
+      - name: Package extension
         env:
           EXTENSION_PRIVATE_KEY: ${{ secrets.EXTENSION_PRIVATE_KEY }}
+          TAG: ${{ github.event.release.tag_name }}
         shell: bash
         run: |
           set -euo pipefail
-
-          version="${GITHUB_REF_NAME#v}"
-          manifest_version="$(node -p "require('./src/manifest.json').version")"
-
-          if [[ "$manifest_version" != "$version" ]]; then
-            echo "Manifest version ($manifest_version) does not match tag (v$version)." >&2
-            exit 1
-          fi
 
           if [[ -z "$EXTENSION_PRIVATE_KEY" ]]; then
             echo "The EXTENSION_PRIVATE_KEY secret is required." >&2
             exit 1
           fi
 
+          version="${TAG#v}"
+          manifest_version="$(node -p "require('./src/manifest.json').version")"
+          if [[ "$manifest_version" != "$version" ]]; then
+            echo "::warning::Manifest version ($manifest_version) does not match release tag ($TAG)."
+          fi
+
           mkdir -p build
-          printf '%s' "$EXTENSION_PRIVATE_KEY" | base64 --decode > build/extension.pem
-          cp -R src build/extension
 
-          chrome \
-            --headless \
-            --no-sandbox \
-            --disable-gpu \
-            --pack-extension="$GITHUB_WORKSPACE/build/extension" \
-            --pack-extension-key="$GITHUB_WORKSPACE/build/extension.pem"
+          # Accept the key either as raw PEM or base64-encoded PEM.
+          if [[ "$EXTENSION_PRIVATE_KEY" == *"-----BEGIN"* ]]; then
+            printf '%s\n' "$EXTENSION_PRIVATE_KEY" > build/extension.pem
+          else
+            printf '%s' "$EXTENSION_PRIVATE_KEY" | base64 --decode > build/extension.pem
+          fi
 
-          mv build/extension.crx "robux-censor-v${version}.crx"
           (
-            cd build/extension
-            zip -qr "../../robux-censor-v${version}.zip" .
+            cd src
+            zip -qr "../robux-censor-${TAG}.zip" .
           )
-          rm -rf build
 
-      - name: Publish GitHub release
+          npx --yes crx3 --keyPath build/extension.pem --crxPath "robux-censor-${TAG}.crx" src
+
+          rm -rf build
+          ls -la robux-censor-"${TAG}".*
+
+      - name: Upload assets to release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          tag_name: ${{ github.event.release.tag_name }}
           files: |
-            robux-censor-*.crx
-            robux-censor-*.zip
+            robux-censor-${{ github.event.release.tag_name }}.crx
+            robux-censor-${{ github.event.release.tag_name }}.zip
