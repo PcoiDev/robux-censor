@@ -1,33 +1,23 @@
-const toggleBtn = document.getElementById('toggleBtn');
+const toggle = document.getElementById('toggle');
+const status = document.getElementById('status');
 
 chrome.storage.local.get(['robuxHiderEnabled'], (result) => {
-  const isEnabled = result.robuxHiderEnabled !== false;
-  updateButton(isEnabled);
+  render(result.robuxHiderEnabled !== false);
 });
 
-toggleBtn.addEventListener('click', () => {
-  chrome.storage.local.get(['robuxHiderEnabled'], (result) => {
-    const currentState = result.robuxHiderEnabled !== false;
-    const newState = !currentState;
-    
-    chrome.storage.local.set({ robuxHiderEnabled: newState }, () => {
-      updateButton(newState);
-      
-      chrome.tabs.query({ url: 'https://www.roblox.com/*' }, (tabs) => {
-        tabs.forEach(tab => {
-          chrome.tabs.reload(tab.id);
-        });
-      });
+toggle.addEventListener('change', () => {
+  const enabled = toggle.checked;
+
+  chrome.storage.local.set({ robuxHiderEnabled: enabled }, () => {
+    render(enabled);
+
+    chrome.tabs.query({ url: 'https://www.roblox.com/*' }, (tabs) => {
+      tabs.forEach(tab => chrome.tabs.reload(tab.id));
     });
   });
 });
 
-function updateButton(isEnabled) {
-  if (isEnabled) {
-    toggleBtn.textContent = 'Enabled';
-    toggleBtn.className = 'toggle-btn enabled';
-  } else {
-    toggleBtn.textContent = 'Disabled';
-    toggleBtn.className = 'toggle-btn disabled';
-  }
+function render(enabled) {
+  toggle.checked = enabled;
+  status.textContent = enabled ? 'Enabled' : 'Disabled';
 }
