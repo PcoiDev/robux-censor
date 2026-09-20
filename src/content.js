@@ -22,6 +22,10 @@ chrome.storage.local.get(['robuxHiderEnabled'], (result) => {
     const numericGroupRe = /(?:[\d\u00A0\u202F.,]+(?:[KkMmBb+]?)(?:[\s\u00A0\u202F]+[\d\u00A0\u202F.,]+)*)/g;
     const multiQRe = /(\?{3})(?:[\s\u00A0\u202F]+)(\?{3})/g;
 
+    // UI controls that contain numbers which are not Robux amounts
+    // (e.g. the "Past 30 Days" date filter on the transactions page).
+    const skipSelector = '[role="menu"], .dropdown-menu, .input-dropdown-btn, .pager, .pagination';
+
     function walkReplace(root) {
       if (!root) return false;
       let changed = false;
@@ -34,6 +38,7 @@ chrome.storage.local.get(['robuxHiderEnabled'], (result) => {
       for (const n of nodes) {
         const t = n.nodeValue;
         if (!t || !hasDigit(t)) continue;
+        if (n.parentElement && n.parentElement.closest(skipSelector)) continue;
         let r = t.replace(numericGroupRe, "???");
         r = r.replace(multiQRe, "???");
         r = r.replace(/(\?{3})[\s\u00A0\u202F]+(\?{3})/g, "???");
@@ -56,7 +61,11 @@ chrome.storage.local.get(['robuxHiderEnabled'], (result) => {
         ".user-transactions-container",
         ".modal-footer",
         ".popover-content",
-        ".dropdown-wallet"
+        ".dropdown-wallet",
+        // balance shown in the header of the unified purchase modal
+        "#rbx-unified-purchase-heading",
+        // "balance after this transaction" line injected by the RoValra extension
+        ".rovalra-robux-after"
       ];
 
       let any = false;
