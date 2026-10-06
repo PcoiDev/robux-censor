@@ -63,6 +63,3 @@ If you encounter any issues:
 ## Disclaimer
 
 This extension is for privacy purposes only. Use responsibly and in accordance with Roblox's Terms of Service.
-
-> [!CAUTION]
->  Some parts of the code are AI-generated. While I've reviewed and tested everything thoroughly, I'm providing this code for free so others don't have to spend time solving the same problems.
